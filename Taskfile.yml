@@ -50,7 +50,7 @@ tasks:
     desc: "[SRV] Audits formula for best practices"
     deps: [ generate-formula ]
     cmds: 
-      - brew audit --strict --online --formula ./Formula/api.rb
+      - brew audit --online --formula ./Formula/api.rb
     silent: true
 
   brew-commit:

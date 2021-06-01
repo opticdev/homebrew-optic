@@ -3,8 +3,8 @@ require "language/node"
 class Api < Formula
   desc "Optic CLI"
   homepage "https://github.com/opticdev/optic"
-  url "https://registry.npmjs.org/@useoptic/cli/-/cli-10.0.1.tgz"
-  sha256 "6403777d78d78fc10f5c6d2d3cadc0581cfd051ca14c7c0d9775659cc784d218"
+  url "https://registry.npmjs.org/@useoptic/cli/-/cli-10.0.4.tgz"
+  sha256 "21d19694d3a70aa2797ca487e825049eaa18a594c4c9c65ce2174cd72f7e56f1"
   license "MIT"
 
   livecheck do
@@ -16,14 +16,12 @@ class Api < Formula
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
 
-    # Set shebang to Homebrew cellar
-    bin_location = "#{libexec}/bin/api"
-    lines = IO.readlines(bin_location)
-    lines[0] = "#!#{HOMEBREW_PREFIX}/opt/node/bin/node"
-
-    File.open(bin_location, "w") do |file|
-      file.puts lines
-    end
+    rewrite_info = Utils::Shebang::RewriteInfo.new(
+      %r{#!/usr/bin/env node},
+      20,
+      "#{HOMEBREW_PREFIX}/opt/node@14/bin/node\\1",
+    )
+    Utils::Shebang.rewrite_shebang rewrite_info, "#{libexec}/lib/node_modules/@useoptic/cli/bin/run"
 
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
