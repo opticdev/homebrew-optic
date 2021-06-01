@@ -22,8 +22,9 @@ class Api < Formula
       "#{HOMEBREW_PREFIX}/opt/node@14/bin/node\\1",
     )
     Utils::Shebang.rewrite_shebang rewrite_info, "#{libexec}/lib/node_modules/@useoptic/cli/bin/run"
-  end
 
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+  end
 
   test do
     assert_match "@useoptic/cli", shell_output("#{bin}/api --version | awk '{print $1}'")
